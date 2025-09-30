@@ -15,9 +15,9 @@ interface PhotoData {
 
 interface UserData {
   id: number;
-  name: string;
+  name?: string;
   phone?: string;
-  email: string;
+  email?: string;
   email_is_verified?: boolean;
   createdAt: string;
   updatedAt: string;
@@ -28,12 +28,24 @@ interface UserData {
   gender?: string;
   annual_income?: number | null;
   employer?: string;
-  income_source?: string;
+  income_source?: string[] | string;
   job_about?: string | null;
   profession?: string;
   about?: string | null;
   status: string;
   photos?: PhotoData[];
+  // Missing fields from Prisma schema
+  first_date?: string;
+  day_look?: string;
+  has_children?: boolean | null;
+  partner_children?: string;
+  wants_children?: string;
+  looks_more_personality?: number | null;
+  independence_partner?: number | null;
+  religion_alignment?: number | null;
+  interests?: string[] | string;
+  fact_about_me?: string;
+  skip_linkedIn?: boolean;
 }
 
 const formatDate = (dateString?: string): string => {
@@ -137,6 +149,28 @@ const UserInfoTab: React.FC<{ userData: UserData }> = ({ userData }) => (
           </Text>
           <Text>{formatValue(userData.education_place)}</Text>
         </Box>
+        <Box marginBottom="sm">
+          <Text variant="sm" color="textSubtle">
+            About:
+          </Text>
+          <Text>{formatValue(userData.about)}</Text>
+        </Box>
+        <Box marginBottom="sm">
+          <Text variant="sm" color="textSubtle">
+            Fact About Me:
+          </Text>
+          <Text>{formatValue(userData.fact_about_me)}</Text>
+        </Box>
+        <Box marginBottom="sm">
+          <Text variant="sm" color="textSubtle">
+            Interests:
+          </Text>
+          <Text>
+            {Array.isArray(userData.interests)
+              ? userData.interests.join(', ') || 'NULL'
+              : formatValue(userData.interests)}
+          </Text>
+        </Box>
       </Box>
     </Box>
 
@@ -156,13 +190,23 @@ const UserInfoTab: React.FC<{ userData: UserData }> = ({ userData }) => (
             </Text>
             <Text>{formatValue(userData.employer)}</Text>
           </Box>
+          <Box marginBottom="sm">
+            <Text variant="sm" color="textSubtle">
+              Job About:
+            </Text>
+            <Text>{formatValue(userData.job_about)}</Text>
+          </Box>
         </Box>
         <Box>
           <Box marginBottom="sm">
             <Text variant="sm" color="textSubtle">
               Income Source:
             </Text>
-            <Text>{formatValue(userData.income_source)}</Text>
+            <Text>
+              {Array.isArray(userData.income_source)
+                ? userData.income_source.join(', ') || 'NULL'
+                : formatValue(userData.income_source)}
+            </Text>
           </Box>
           <Box marginBottom="sm">
             <Text variant="sm" color="textSubtle">
@@ -201,6 +245,12 @@ const UserInfoTab: React.FC<{ userData: UserData }> = ({ userData }) => (
               Last Update:
             </Text>
             <Text>{formatDate(userData.updatedAt)}</Text>
+          </Box>
+          <Box marginBottom="sm">
+            <Text variant="sm" color="textSubtle">
+              Skip LinkedIn:
+            </Text>
+            <Text>{userData.skip_linkedIn === undefined ? 'NULL' : userData.skip_linkedIn ? 'Yes' : 'No'}</Text>
           </Box>
         </Box>
       </Box>
