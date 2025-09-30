@@ -1,6 +1,7 @@
 import { DatabaseMetadata } from '@adminjs/sql';
 import { ResourceWithOptions } from 'adminjs';
-import { Components } from 'src/admin/component-loader.js';
+
+import { Components } from '../admin/component-loader.js';
 
 export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
   resource: db.table('user'),
