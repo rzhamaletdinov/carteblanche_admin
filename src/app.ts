@@ -4,8 +4,9 @@ import Connect from 'connect-pg-simple';
 import express from 'express';
 import session from 'express-session';
 
-import componentLoader from './admin/component-loader.js';
+import { componentLoader } from './admin/component-loader.js';
 import initializeDb from './db/index.js';
+import { PhotosResource } from './resources/photos.resourse.js';
 import { UserResource } from './resources/user.resource.js';
 import { VerificationCodeResource } from './resources/verification_code.resource.js';
 
@@ -44,6 +45,7 @@ const start = async () => {
     resources: [
       VerificationCodeResource(db),
       UserResource(db),
+      PhotosResource(db),
     ],
   });
 

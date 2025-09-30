@@ -1,5 +1,6 @@
 import { DatabaseMetadata } from '@adminjs/sql';
 import { ResourceWithOptions } from 'adminjs';
+import { Components } from 'src/admin/component-loader.js';
 
 export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
   resource: db.table('user'),
@@ -11,6 +12,7 @@ export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
       delete: { isVisible: false },
       new: { isVisible: false },
       show: {
+        component: Components.MyCustomAction,
         after: async (response) => {
           if (!response?.record?.params?.id) {
             return response;
@@ -56,7 +58,6 @@ export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
             }
 
             const photos = await photosQuery;
-
             return {
               ...response,
               meta: {
