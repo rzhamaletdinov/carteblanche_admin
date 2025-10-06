@@ -4,15 +4,6 @@ import { Badge, Box, H3, H4, H5, Icon, Tab, Tabs, Text } from '@adminjs/design-s
 import { ActionProps } from 'adminjs';
 import React from 'react';
 
-interface PhotoData {
-  id: string;
-  userId: number;
-  s3Key: string;
-  createdAt: string;
-  position: number;
-  uploadedById: number;
-}
-
 interface UserData {
   id: number;
   name?: string;
@@ -33,7 +24,7 @@ interface UserData {
   profession?: string;
   about?: string | null;
   status: string;
-  photos?: PhotoData[];
+  photos?: string[];
   // Missing fields from Prisma schema
   first_date?: string;
   day_look?: string;
@@ -258,7 +249,7 @@ const UserInfoTab: React.FC<{ userData: UserData }> = ({ userData }) => (
   </Box>
 );
 
-const PhotosTab: React.FC<{ photos: PhotoData[] }> = ({ photos }) => {
+const PhotosTab: React.FC<{ photos: string[] }> = ({ photos }) => {
   const s3BaseUrl = process.env.S3_BASE_URL || 'https://thegentsdevelop.s3.eu-north-1.amazonaws.com';
 
   if (!photos || photos.length === 0) {
@@ -284,35 +275,24 @@ const PhotosTab: React.FC<{ photos: PhotoData[] }> = ({ photos }) => {
           gap: '1rem',
         }}
       >
-        {photos
-          .sort((a, b) => a.position - b.position)
-          .map((photo) => {
-            const imageUrl = `${s3BaseUrl}/${photo.s3Key}`;
-            return (
-              <Box key={photo.id} variant="container" borderRadius="lg" overflow="hidden" style={{ aspectRatio: '1' }}>
-                <Box
-                  as="img"
-                  src={imageUrl}
-                  alt={`Photo ${photo.position}`}
-                  style={{
-                    width: '100%',
-                    height: '200px',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => window.open(imageUrl, '_blank')}
-                />
-                <Box padding="sm">
-                  <Text variant="xs" color="textSubtle">
-                    Position: {photo.position}
-                  </Text>
-                  <Text variant="xs" color="textSubtle">
-                    {formatDate(photo.createdAt)}
-                  </Text>
-                </Box>
-              </Box>
-            );
-          })}
+        {photos.map((photo) => {
+          const imageUrl = `${s3BaseUrl}/${photo}`;
+          return (
+            <Box key={photo} variant="container" borderRadius="lg" overflow="hidden" style={{ aspectRatio: '1' }}>
+              <Box
+                as="img"
+                src={imageUrl}
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  objectFit: 'cover',
+                  cursor: 'pointer',
+                }}
+                onClick={() => window.open(imageUrl, '_blank')}
+              />
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );
@@ -323,8 +303,9 @@ function MyCustomAction(props: ActionProps) {
   const [selectedTab, setSelectedTab] = React.useState('info');
 
   const userData = record.params as UserData;
-  const photos = userData.photos || [];
-
+  const photos = Object.keys(userData)
+    .filter((key) => key.startsWith('photos.'))
+    .map((key) => userData[key]);
   return (
     <Tabs currentTab={selectedTab} onChange={setSelectedTab}>
       <Tab id="info" label="Information">
