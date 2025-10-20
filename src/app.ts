@@ -16,7 +16,7 @@ const port = process.env.PORT || 3001;
 const DEFAULT_ADMIN = {
   email: 'admin@thegents.com',
   password: 'admin',
-};  // creds
+};
 
 const authenticate = async (email: string, password: string) => {
   if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {

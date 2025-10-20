@@ -9,7 +9,7 @@ function NewMatchAction(props: ActionProps) {
     const userId1InputValue = event.target.elements.userId1Input.value;
     const userId2InputValue = event.target.elements.userId2Input.value;
 
-    fetch('http://localhost:3000/chat/sendbird/chat/add', {
+    fetch('https://dev-api.thecarteblanche.club/chat/sendbird/chat/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
