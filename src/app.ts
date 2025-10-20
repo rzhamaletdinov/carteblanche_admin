@@ -43,12 +43,7 @@ const start = async () => {
   const admin = new AdminJS({
     componentLoader,
     rootPath: '/',
-    resources: [
-      VerificationCodeResource(db),
-      UserResource(db),
-      PhotosResource(db),
-      MatchesResource(db),
-    ],
+    resources: [VerificationCodeResource(db), UserResource(db), PhotosResource(db), MatchesResource(db)],
   });
 
   if (process.env.NODE_ENV === 'production') {
@@ -76,7 +71,7 @@ const start = async () => {
         secure: process.env.NODE_ENV === 'production',
       },
       name: 'adminjs',
-    },
+    }
   );
 
   app.use(admin.options.rootPath, adminRouter);

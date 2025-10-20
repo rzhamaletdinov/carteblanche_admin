@@ -1,4 +1,6 @@
-import { Box, Button, Input, Label } from '@adminjs/design-system';
+import {
+  Box, Button, Input, Label,
+} from '@adminjs/design-system';
 import { ActionProps } from 'adminjs';
 import React from 'react';
 
@@ -8,6 +10,8 @@ function NewMatchAction(props: ActionProps) {
     // Handle form submission logic here
     const userId1InputValue = event.target.elements.userId1Input.value;
     const userId2InputValue = event.target.elements.userId2Input.value;
+    // console.log('process.env.API_HOST', process.env.API_HOST);
+    // fetch(`${process.env.API_HOST}/chat/sendbird/chat/add`, {
 
     fetch('https://dev-api.thecarteblanche.club/chat/sendbird/chat/add', {
       method: 'POST',
@@ -16,8 +20,8 @@ function NewMatchAction(props: ActionProps) {
         // 'Authorization': 'Bearer YOUR_AUTH_TOKEN'
       },
       body: JSON.stringify({
-        userId1: userId1InputValue,
-        userId2: userId2InputValue,
+        userId1: +userId1InputValue,
+        userId2: +userId2InputValue,
       }),
     })
       .then((response) => {
@@ -42,11 +46,11 @@ function NewMatchAction(props: ActionProps) {
       <form onSubmit={handleSubmit}>
         <Box mb="lg">
           <Label>User Id 1:</Label>
-          <Input id="userId1Input" name="userId1Input" placeholder="Enter user id" />
+          <Input id="userId1Input" name="userId1Input" placeholder="Enter user id" type="number" />
         </Box>
         <Box mb="lg">
           <Label>User Id 2:</Label>
-          <Input id="userId2Input" name="userId2Input" placeholder="Enter user id" />
+          <Input id="userId2Input" name="userId2Input" placeholder="Enter user id" type="number" />
         </Box>
         <Button variant="contained" type="submit">Submit</Button>
       </form>
