@@ -9,6 +9,7 @@ import initializeDb from './db/index.js';
 import { PhotosResource } from './resources/photos.resourse.js';
 import { UserResource } from './resources/user.resource.js';
 import { VerificationCodeResource } from './resources/verification_code.resource.js';
+import { MatchesResource } from './resources/matches.resourse.js';
 
 const port = process.env.PORT || 3001;
 
@@ -46,6 +47,7 @@ const start = async () => {
       VerificationCodeResource(db),
       UserResource(db),
       PhotosResource(db),
+      MatchesResource(db),
     ],
   });
 

@@ -1,81 +1,13 @@
 /* eslint-disable react/function-component-definition */
 /* eslint-disable react/jsx-filename-extension */
-import { Badge, Box, H3, H4, H5, Icon, Tab, Tabs, Text } from '@adminjs/design-system';
+import {
+  Badge, Box, H3, H4, H5, Icon, Tab, Tabs, Text,
+} from '@adminjs/design-system';
 import { ActionProps } from 'adminjs';
 import React from 'react';
 
-interface UserData {
-  id: number;
-  name?: string;
-  phone?: string;
-  email?: string;
-  email_is_verified?: boolean;
-  createdAt: string;
-  updatedAt: string;
-  birthdate?: string;
-  city?: string;
-  education?: string;
-  education_place?: string;
-  gender?: string;
-  annual_income?: number | null;
-  employer?: string;
-  income_source?: string[] | string;
-  job_about?: string | null;
-  profession?: string;
-  about?: string | null;
-  status: string;
-  photos?: string[];
-  // Missing fields from Prisma schema
-  first_date?: string;
-  day_look?: string;
-  has_children?: boolean | null;
-  partner_children?: string;
-  wants_children?: string;
-  looks_more_personality?: number | null;
-  independence_partner?: number | null;
-  religion_alignment?: number | null;
-  interests?: string[] | string;
-  fact_about_me?: string;
-  skip_linkedIn?: boolean;
-}
-
-const formatDate = (dateString?: string): string => {
-  if (!dateString) return 'N/A';
-  try {
-    return new Date(dateString).toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  } catch {
-    return dateString;
-  }
-};
-
-const formatValue = (value: unknown): string => {
-  if (value === null) return 'NULL';
-  if (value === undefined) return 'NULL';
-  if (value === '') return 'Empty';
-  return String(value);
-};
-
-const getStatusVariant = (status: string): 'primary' | 'success' | 'warning' | 'danger' => {
-  switch (status) {
-    case 'ACTIVE':
-      return 'success';
-    case 'NEW':
-    case 'WAITING_PREMODERATION':
-    case 'WAITING_APPROVE':
-      return 'warning';
-    case 'DECLINED':
-    case 'BANNED':
-      return 'danger';
-    default:
-      return 'primary';
-  }
-};
+import { formatDate, formatValue, getStatusVariant } from './utils.js';
+import { UserData } from './interfaces.js';
 
 const UserInfoTab: React.FC<{ userData: UserData }> = ({ userData }) => (
   <Box variant="card" padding="xl">
@@ -298,7 +230,7 @@ const PhotosTab: React.FC<{ photos: string[] }> = ({ photos }) => {
   );
 };
 
-function MyCustomAction(props: ActionProps) {
+function ShowUserAction(props: ActionProps) {
   const { record } = props;
   const [selectedTab, setSelectedTab] = React.useState('info');
 
@@ -318,4 +250,4 @@ function MyCustomAction(props: ActionProps) {
   );
 }
 
-export default MyCustomAction;
+export default ShowUserAction;

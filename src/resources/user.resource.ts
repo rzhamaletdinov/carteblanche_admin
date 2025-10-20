@@ -13,7 +13,7 @@ export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
       delete: { isVisible: false },
       new: { isVisible: false },
       show: {
-        component: Components.MyCustomAction,
+        component: Components.ShowUserAction,
       },
     },
     listProperties: ['id', 'name', 'email', 'createdAt'],

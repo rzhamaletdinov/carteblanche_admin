@@ -3,8 +3,8 @@ import { ComponentLoader } from 'adminjs';
 const componentLoader = new ComponentLoader();
 
 const Components = {
-  MyCustomAction: componentLoader.add('MyCustomAction', './my-custom-action'),
-  // other custom components
+  ShowUserAction: componentLoader.add('ShowUserAction', './actions/show-user/show-user.action'),
+  NewMatchAction: componentLoader.add('NewMatchAction', './actions/new-match/new-match.action'),
 };
 
 export { componentLoader, Components };
