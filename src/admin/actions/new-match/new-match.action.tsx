@@ -43,7 +43,7 @@ function NewMatchAction(props: ActionProps) {
   return (
     <Box variant="grey">
       {/* <H1>My Custom Admin Page</H1> */}
-      <form onSubmit={handleSubmit}>
+      <form action="https://dev-admin.thecarteblanche.club/resources/Matches" onSubmit={handleSubmit}>
         <Box mb="lg">
           <Label>User Id 1:</Label>
           <Input id="userId1Input" name="userId1Input" placeholder="Enter user id" type="number" />

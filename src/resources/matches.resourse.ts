@@ -9,13 +9,9 @@ export const MatchesResource = (db: DatabaseMetadata): ResourceWithOptions => ({
     id: 'Matches',
     navigation: null,
     actions: {
-      // bulkDelete: { isVisible: false },
-      // delete: { isVisible: true },
       new: { component: Components.NewMatchAction },
-      // edit: { isVisible: true },
-      // show: { isVisible: true },
     },
-    listProperties: ['id', 'user1Id', 'user2Id', 'status', 'createdAt', 'status', 'chat_id'],
+    listProperties: ['id', 'user1Id', 'user2Id', 'status', 'createdAt', 'status', 'chatId'],
     sort: {
       sortBy: 'createdAt',
       direction: 'asc',

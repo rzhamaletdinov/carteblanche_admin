@@ -10,6 +10,7 @@ import { PhotosResource } from './resources/photos.resourse.js';
 import { UserResource } from './resources/user.resource.js';
 import { VerificationCodeResource } from './resources/verification_code.resource.js';
 import { MatchesResource } from './resources/matches.resourse.js';
+import { SettingsResource } from './resources/app-settings.resourse.js';
 
 const port = process.env.PORT || 3001;
 
@@ -43,7 +44,13 @@ const start = async () => {
   const admin = new AdminJS({
     componentLoader,
     rootPath: '/',
-    resources: [VerificationCodeResource(db), UserResource(db), PhotosResource(db), MatchesResource(db)],
+    resources: [
+      VerificationCodeResource(db),
+      UserResource(db),
+      PhotosResource(db),
+      MatchesResource(db),
+      SettingsResource(db),
+    ],
   });
 
   if (process.env.NODE_ENV === 'production') {
