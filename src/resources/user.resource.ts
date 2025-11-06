@@ -29,5 +29,9 @@ export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
         ],
       },
     },
+    sort: {
+      sortBy: 'createdAt',
+      direction: 'desc',
+    },
   },
 });

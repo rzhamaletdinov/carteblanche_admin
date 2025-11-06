@@ -9,9 +9,5 @@ export const SettingsResource = (db: DatabaseMetadata): ResourceWithOptions => (
     actions: {
       bulkDelete: { isVisible: false },
     },
-    // sort: {
-    //   sortBy: 'createdAt',
-    //   direction: 'asc',
-    // },
   },
 });

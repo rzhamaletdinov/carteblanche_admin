@@ -16,7 +16,7 @@ export const VerificationCodeResource = (db: DatabaseMetadata): ResourceWithOpti
     listProperties: ['type', 'code', 'contact'],
     sort: {
       sortBy: 'createdAt',
-      direction: 'asc',
+      direction: 'desc',
     },
   },
 });

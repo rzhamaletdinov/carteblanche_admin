@@ -14,7 +14,7 @@ export const MatchesResource = (db: DatabaseMetadata): ResourceWithOptions => ({
     listProperties: ['id', 'user1Id', 'user2Id', 'status', 'createdAt', 'status', 'chatId'],
     sort: {
       sortBy: 'createdAt',
-      direction: 'asc',
+      direction: 'desc',
     },
   },
 });
