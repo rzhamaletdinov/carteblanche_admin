@@ -35,3 +35,5 @@ export const getStatusVariant = (status: string): 'primary' | 'success' | 'warni
     return 'primary';
   }
 };
+
+export const blanck = () => {}
