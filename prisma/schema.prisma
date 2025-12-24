@@ -1,0 +1,422 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider         = "prisma-client-js"
+  // output   = "../generated/prisma"
+  connection_limit = 25
+  pool_timeout     = 30
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      Int            @id @default(autoincrement())
+  status                  UserStatus     @default(NEW)
+  name                    String?
+  phone                   String         @unique
+  email                   String?        @unique
+  email_is_verified       Boolean        @default(false)
+  birthdate               DateTime?
+  gender                  Gender?
+  city                    String?
+  education               Education?
+  education_place         String?
+  profession              String?
+  employer                String?
+  job_about               String?
+  income_source           IncomeSource[]
+  annual_income           AnnualIncome?
+  occupation              Occupation?
+  first_date              FirstDate?
+  day_look                DayLook?
+  has_children            Boolean?
+  partner_children        YesNoMaybe?
+  wants_children          YesNoMaybe?
+  looks_more_personality  Int?
+  independence_partner    Int?
+  religion_alignment      Int?
+  age_importance          Int?
+  about                   String?
+  interests               Interest[]
+  fact_about_me           String?
+  skip_linkedIn           Boolean        @default(false) // пропускать ли LinkedIn при обновлении профиля
+  is_club                 Boolean        @default(false)
+  is_deactivated          Boolean        @default(false)
+  is_onboarding_completed Boolean        @default(false)
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  ignore_matching         Boolean        @default(false)
+  last_seen               DateTime       @default(now())
+
+  // Relations for social accounts
+  socialAccounts SocialAccount[]
+  photos         String[] // Array of S3 keys for user photos
+  uploadedPhotos Photo[]         @relation("UploadedPhotos")
+
+  // Relations for matching system
+  user1Matches      Match[]   @relation("User1Matches")
+  user2Matches      Match[]   @relation("User2Matches")
+  likesGiven        Like[]    @relation("LikesGiven")
+  likesReceived     Like[]    @relation("LikesReceived")
+  dislikesGiven     Dislike[] @relation("DislikesGiven")
+  dislikesReceived  Dislike[] @relation("DislikesReceived")
+  rematchesGiven    Rematch[] @relation("RematchGiven")
+  rematchesReceived Rematch[] @relation("RematchReceived")
+
+  @@map("user")
+}
+
+enum Occupation {
+  EMPLOYED
+  SELF_EMPLOYED
+  BUSINESS_OWNER
+  UNEMPLOYED
+  STUDENT
+  RETIRED
+  HOME_PARENT
+}
+
+enum Interest {
+  ART_COLLECTING
+  ARCHITECTURE
+  INTERIOR_DESIGN
+  PHOTOGRAPHY
+  FASHION
+  LITERATURE
+  CLASSICAL_MUSIC_AND_OPERA
+  WATCHES
+  CRAFTSMANSHIP
+  DESIGN
+  GOLF
+  TENNIS
+  HOCKEY
+  FOOTBALL
+  BASKETBALL
+  BASEBALL
+  SOCCER
+  SAILING
+  SKIING
+  SNOWBOARDING
+  HORSEBACK_RIDING
+  POLO
+  FITNESS
+  YOGA
+  MARTIAL_ARTS
+  HIKING_AND_TREKKING
+  RUNNING
+  CYCLING
+  MOTORSPORTS
+  YACHTING
+  COUNTRYSIDE_RETREATS
+  BEACH_RESORTS_AND_SPAS
+  MOUNTAIN_ESCAPES
+  SAFARI_AND_EXPEDITIONS
+  FISHING
+  SPORT_RETREATS
+  TRAVELING
+  HAUTE_CUISINE
+  PRIVATE_CLUBS
+  NETWORKING_EVENTS
+  CONCERTS_AND_THEATRE
+  ART_FAIRS_AND_EXHIBITIONS
+  SPORTS_EVENTS
+  COLLECTIBLES
+  WORLD_HISTORY
+  PHILOSOPHY
+  GEOPOLITICS
+  TECHNOLOGY
+  INVESTING
+  ECONOMICS
+  LANGUAGES
+  PSYCHOLOGY
+  ENTREPRENEURSHIP
+  PHILANTHROPY
+  VOLUNTEERING
+  RELIGION
+  MINDFULNESS
+  LONGEVITY
+  LEGACY_BUILDING
+}
+
+enum UserStatus {
+  NEW
+  WAITING_PREMODERATION
+  ACTIVE
+  WAITING_APPROVE
+  DECLINED
+  BANNED
+}
+
+enum YesNoMaybe {
+  YES
+  NO
+  MAYBE
+}
+
+enum DayLook {
+  RELAXING
+  TRAVELING
+  SPORT
+  FRIENDS
+  LEARNING
+}
+
+enum FirstDate {
+  RESTAURANT
+  CULTURAL_EVENING
+  COCKTAIL_BAR
+  WEEKEND
+  CASUAL_SPOT
+  SHARED_ACTIVITY
+  RELAXED_WALK
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Education {
+  HIGH_SCHOOL
+  ASSOC_DEG
+  BACHELORS
+  MASTERS
+  MBA
+  DOCTORAL
+}
+
+enum IncomeSource {
+  BUSINESS_PROFITS // прибыль от бизнеса
+  SALARY_WAGE // зарплата
+  INVESTMENTS // инвестиции
+  SELF_EMPLOYMENT // самозанятость
+  ROYALTIES // роялти
+  PENSION_RETIREMENT // пенсии/накопления
+  INHERITANCE // наследство
+  FAMILY_SUPPORT // поддержка семьи
+}
+
+enum AnnualIncome {
+  FROM_0K_TO_119K
+  FROM_120K_TO_199K
+  FROM_200K_TO_299K
+  FROM_300K_TO_499K
+  FROM_500K_TO_999K
+  FROM_1M_OR_MORE
+
+  FROM_0K_TO_50K
+  FROM_50K_TO_99K
+  FROM_100K_TO_149K
+  FROM_149K_TO_249K
+  FROM_250K_OR_MORE
+}
+
+model VerificationCode {
+  id      Int              @id @default(autoincrement())
+  code    String
+  type    VerificationType
+  contact String // email или phone
+
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([contact, type])
+  @@map("verification_code")
+}
+
+enum VerificationType {
+  EMAIL
+  PHONE
+
+  @@map("verification_type")
+}
+
+model SocialAccount {
+  id           Int            @id @default(autoincrement())
+  userId       Int
+  provider     SocialProvider
+  accessToken  String
+  providerData Json // Дополнительные данные от провайдера
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, provider]) // Один пользователь - один аккаунт на провайдера
+  @@map("social_account")
+}
+
+enum SocialProvider {
+  LINKEDIN
+  INSTAGRAM
+}
+
+model Photo {
+  id           String   @id @default(uuid()) @db.Uuid
+  uploadedById Int
+  uploadedBy   User     @relation("UploadedPhotos", fields: [uploadedById], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+
+  @@map("photo")
+}
+
+model Match {
+  id        Int         @id @default(autoincrement())
+  user1Id   Int // Первый пользователь в мэтче
+  user2Id   Int // Второй пользователь в мэтче
+  chatId    String?     @unique
+  status    MatchStatus @default(PENDING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  expiredAt DateTime    @default(dbgenerated("NOW() + INTERVAL '30 days'"))
+
+  // Relations
+  user1   User     @relation("User1Matches", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2   User     @relation("User2Matches", fields: [user2Id], references: [id], onDelete: Cascade)
+  rematch Rematch?
+
+  @@unique([user1Id, user2Id]) // Уникальность пары пользователей
+  @@map("match")
+}
+
+enum MatchStatus {
+  PENDING // Ожидает подтверждения
+  ACTIVE // Активный мэтч (оба пользователя согласились)
+  DECLINED // Отклонен одним из пользователей
+  EXPIRED // Истек срок действия
+}
+
+model Like {
+  id         Int      @id @default(autoincrement())
+  fromUserId Int // Кто поставил лайк
+  toUserId   Int // Кому поставил лайк
+  createdAt  DateTime @default(now())
+
+  // Relations
+  fromUser User @relation("LikesGiven", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("LikesReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId]) // Один лайк между пользователями
+  @@map("like")
+}
+
+model Dislike {
+  id         Int      @id @default(autoincrement())
+  fromUserId Int // Кто поставил дизлайк
+  toUserId   Int // Кому поставил дизлайк
+  createdAt  DateTime @default(now())
+
+  // Relations
+  fromUser User @relation("DislikesGiven", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("DislikesReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId]) // Один лайк между пользователями
+  @@map("dislike")
+}
+
+model Rematch {
+  id         Int      @id @default(autoincrement())
+  matchId    Int      @unique
+  fromUserId Int // Инициатор rematch
+  toUserId   Int // Принимающий rematch
+  createdAt  DateTime @default(now())
+
+  // Relations
+  match    Match @relation(fields: [matchId], references: [id])
+  fromUser User  @relation("RematchGiven", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User  @relation("RematchReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId])
+  @@map("rematch")
+}
+
+model AppSettings {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+}
+
+model MatchChildrenRatio {
+  userHasPartnerChildren YesNoMaybe
+  userWantsChildren      YesNoMaybe
+  partnerHaveChildren    Boolean
+  partnerWantsChildren   YesNoMaybe
+  ratio                  Float
+
+  @@id(name: "ratioId", [userHasPartnerChildren, userWantsChildren, partnerHaveChildren, partnerWantsChildren])
+}
+
+model MatchManAgeRatio {
+  manAge   Int
+  womanAge Int
+  ratio    Float
+
+  @@id(name: "ratioId", [manAge, womanAge])
+}
+
+model MatchWomanAgeRatio {
+  manAge   Int
+  womanAge Int
+  ratio    Float
+
+  @@id(name: "ratioId", [manAge, womanAge])
+}
+
+model MatchLooksPersonalityRatio {
+  user    Int
+  partner Int
+  ratio   Float
+
+  @@id(name: "ratioId", [user, partner])
+}
+
+model MatchFirstDateRatio {
+  user    FirstDate
+  partner FirstDate
+  ratio   Float
+
+  @@id(name: "ratioId", [user, partner])
+}
+
+model MatchDayLookRatio {
+  user    DayLook
+  partner DayLook
+  ratio   Float
+
+  @@id(name: "ratioId", [user, partner])
+}
+
+model MatchGenderRatio {
+  user    Int
+  partner Int
+  ratio   Float
+
+  @@id(name: "ratioId", [user, partner])
+}
+
+model Feed {
+  userId          Int      @id
+  selectedUserIds Int[]
+  createdAt       DateTime @default(now())
+
+  @@map("feed")
+}
+
+model FeedArchived {
+  userId          Int
+  selectedUserIds Int[]
+  createdAt       DateTime
+
+  @@id(name: "feedArchivedId", [userId, createdAt])
+  @@map("feed_archived")
+}

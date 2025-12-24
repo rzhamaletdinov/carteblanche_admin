@@ -1,11 +1,12 @@
-import { DatabaseMetadata } from '@adminjs/sql';
-import { ResourceWithOptions } from 'adminjs';
+import { ResourceOptions } from 'adminjs';
+import { PrismaClient } from '@prisma/client';
+import { getModelByName } from '@adminjs/prisma';
 
-export const VerificationCodeResource = (db: DatabaseMetadata): ResourceWithOptions => ({
-  resource: db.table('verification_code'),
-  options: {
+export const VerificationCodeResource = (prisma: PrismaClient) => ({
+  resource: { model: getModelByName('VerificationCode'), client: prisma },
+  options: <ResourceOptions>{
     id: 'Verification Codes',
-    navigation: null,
+    navigation: { name: 'Entities' },
     actions: {
       bulkDelete: { isVisible: false },
       delete: { isVisible: false },

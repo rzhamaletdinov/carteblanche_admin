@@ -8,12 +8,13 @@ function NewMatchAction(props: ActionProps) {
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handle form submission logic here
+    const host = 'https://dev-api.thecarteblanche.club'
     const userId1InputValue = event.target.elements.userId1Input.value;
     const userId2InputValue = event.target.elements.userId2Input.value;
     // console.log('process.env.API_HOST', process.env.API_HOST);
     // fetch(`${process.env.API_HOST}/chat/sendbird/chat/add`, {
 
-    fetch('https://dev-api.thecarteblanche.club/chat/sendbird/chat/add', {
+    fetch(`${host}/chat/sendbird/chat/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,12 +29,14 @@ function NewMatchAction(props: ActionProps) {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json(); // or response.text() for non-JSON responses
+        window.location.href = `${host}/resources/Matches`;
+
+        // return response.json(); // or response.text() for non-JSON responses
       })
-      .then((data) => {
-        console.log('Success:', data);
-        // Process the data in your admin panel
-      })
+      // .then((data) => {
+      //   console.log('Success:', data);
+      //   // Process the data in your admin panel
+      // })
       .catch((error) => {
         console.error('Error:', error);
         // Handle errors in your admin panel
@@ -43,7 +46,7 @@ function NewMatchAction(props: ActionProps) {
   return (
     <Box variant="grey">
       {/* <H1>My Custom Admin Page</H1> */}
-      <form action="https://dev-admin.thecarteblanche.club/resources/Matches" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <Box mb="lg">
           <Label>User Id 1:</Label>
           <Input id="userId1Input" name="userId1Input" placeholder="Enter user id" type="number" />

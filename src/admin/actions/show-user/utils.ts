@@ -22,18 +22,16 @@ export const formatValue = (value: unknown): string => {
 
 export const getStatusVariant = (status: string): 'primary' | 'success' | 'warning' | 'danger' => {
   switch (status) {
-  case 'ACTIVE':
-    return 'success';
-  case 'NEW':
-  case 'WAITING_PREMODERATION':
-  case 'WAITING_APPROVE':
-    return 'warning';
-  case 'DECLINED':
-  case 'BANNED':
-    return 'danger';
-  default:
-    return 'primary';
+    case 'ACTIVE':
+      return 'success';
+    case 'NEW':
+    case 'WAITING_PREMODERATION':
+    case 'WAITING_APPROVE':
+      return 'warning';
+    case 'DECLINED':
+    case 'BANNED':
+      return 'danger';
+    default:
+      return 'primary';
   }
 };
-
-export const blanck = () => {}

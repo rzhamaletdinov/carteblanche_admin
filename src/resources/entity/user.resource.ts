@@ -1,13 +1,13 @@
-import { DatabaseMetadata } from '@adminjs/sql';
-import { ResourceWithOptions } from 'adminjs';
+import { Components } from '../../admin/component-loader.js';
 
-import { Components } from '../admin/component-loader.js';
+import { PrismaClient } from '@prisma/client';
+import { getModelByName } from '@adminjs/prisma';
 
-export const UserResource = (db: DatabaseMetadata): ResourceWithOptions => ({
-  resource: db.table('user'),
+export const UserResource = (prisma: PrismaClient) => ({
+  resource: { model: getModelByName('User'), client: prisma },
   options: {
-    id: 'user',
-    navigation: { icon: 'User' },
+    id: 'User',
+    navigation: { name: 'Entities', icon: 'User' },
     actions: {
       bulkDelete: { isVisible: false },
       delete: { isVisible: false },

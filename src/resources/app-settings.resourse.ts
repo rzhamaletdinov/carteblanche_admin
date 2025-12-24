@@ -1,8 +1,8 @@
-import { DatabaseMetadata } from '@adminjs/sql';
-import { ResourceWithOptions } from 'adminjs';
+import { PrismaClient } from '@prisma/client';
+import { getModelByName } from '@adminjs/prisma';
 
-export const SettingsResource = (db: DatabaseMetadata): ResourceWithOptions => ({
-  resource: db.table('AppSettings'),
+export const SettingsResource = (prisma: PrismaClient) => ({
+  resource: { model: getModelByName('AppSettings'), client: prisma },
   options: {
     id: 'Settings',
     navigation: null,

@@ -1,4 +1,5 @@
 {
+  "name": "admin",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -6,18 +7,21 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "tsc",
     "lint": "eslint \"src\"",
-    "start": "dotenv -c '.env' -- node dist/app"
+    "start": "dotenv -c '.env' -- node dist/app",
+    "start:dev": "yarn build && prisma generate && yarn start"
   },
   "dependencies": {
     "@adminjs/design-system": "^4.1.1",
     "@adminjs/express": "^6.1.0",
-    "@adminjs/sql": "^2.2.1",
+    "@adminjs/prisma": "^5.0.4",
+    "@prisma/client": "^6.19.0",
     "adminjs": "^7.7.2",
     "connect-pg-simple": "^10.0.0",
     "express": "^4.18.2",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
-    "pg": "latest"
+    "pg": "latest",
+    "prisma": "^6.19.0"
   },
   "devDependencies": {
     "@types/connect-pg-simple": "^7.0.3",
@@ -37,6 +41,5 @@
     "prettier": "^3.1.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
-  },
-  "name": "admin"
+  }
 }

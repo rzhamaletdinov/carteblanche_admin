@@ -4,15 +4,15 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Установим только package.json и lock файл для кеширования слоёв
-COPY package*.json ./
+COPY package.json yarn.lock ./
 
-RUN npm ci
+RUN yarn --frozen-lockfile
 
 # Копируем исходники
 COPY . .
 
 # Билдим nestjs
-RUN npm run build
+RUN yarn build
 
 # 2. Production image
 FROM node:22-alpine AS runner
@@ -30,5 +30,5 @@ COPY --from=builder /app/package*.json ./
 EXPOSE 3000
 
 # Запускаем app
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]
 
