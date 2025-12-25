@@ -1,11 +1,11 @@
-import { DatabaseMetadata } from '@adminjs/sql';
-import { ResourceWithOptions } from 'adminjs';
+import { PrismaClient } from '@prisma/client';
+import { getModelByName } from '@adminjs/prisma';
 
-export const PhotosResource = (db: DatabaseMetadata): ResourceWithOptions => ({
-  resource: db.table('photo'),
+export const PhotosResource = (prisma: PrismaClient) => ({
+  resource: { model: getModelByName('Photo'), client: prisma },
   options: {
     id: 'Photos',
-    navigation: null,
+    navigation: { name: 'Entities' },
     actions: {
       bulkDelete: { isVisible: false },
       delete: { isVisible: false },

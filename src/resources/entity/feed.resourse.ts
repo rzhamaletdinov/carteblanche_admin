@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { getModelByName } from '@adminjs/prisma';
 
-export const SettingsResource = (prisma: PrismaClient) => ({
-  resource: { model: getModelByName('AppSettings'), client: prisma },
+export const FeedResource = (prisma: PrismaClient) => ({
+  resource: { model: getModelByName('Feed'), client: prisma },
   options: {
-    id: 'Settings',
-    navigation: null,
+    id: 'Feed',
+    navigation: { name: 'Entities' },
     actions: {
       bulkDelete: { isVisible: false },
     },
