@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Установим только package.json и lock файл для кеширования слоёв
 COPY package.json yarn.lock ./
+COPY prisma ./prisma
 
 RUN yarn --frozen-lockfile
 
@@ -24,7 +25,11 @@ ENV NODE_ENV=production
 # Копируем только нужное
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/package.json ./
+
+# Генерация клиентa в рантайме (если нужно для миграций)
+RUN npx prisma generate
 
 # Экспонируем порт
 EXPOSE 3000

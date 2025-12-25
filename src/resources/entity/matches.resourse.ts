@@ -1,4 +1,4 @@
-import { Components } from '../../admin/component-loader.js';
+import { Components } from '../../components/component-loader.js';
 import { PrismaClient } from '@prisma/client';
 import { getModelByName } from '@adminjs/prisma';
 

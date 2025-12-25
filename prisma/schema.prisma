@@ -347,65 +347,64 @@ model AppSettings {
 }
 
 model MatchChildrenRatio {
+  id                     Int        @id @default(autoincrement())
   userHasPartnerChildren YesNoMaybe
   userWantsChildren      YesNoMaybe
   partnerHaveChildren    Boolean
   partnerWantsChildren   YesNoMaybe
   ratio                  Float
 
-  @@id(name: "ratioId", [userHasPartnerChildren, userWantsChildren, partnerHaveChildren, partnerWantsChildren])
+  @@unique(name: "ratioId", [userHasPartnerChildren, userWantsChildren, partnerHaveChildren, partnerWantsChildren])
 }
 
 model MatchManAgeRatio {
+  id       Int   @id @default(autoincrement())
   manAge   Int
   womanAge Int
   ratio    Float
 
-  @@id(name: "ratioId", [manAge, womanAge])
+  @@unique(name: "ratioId", [manAge, womanAge])
 }
 
 model MatchWomanAgeRatio {
+  id       Int   @id @default(autoincrement())
   manAge   Int
   womanAge Int
   ratio    Float
 
-  @@id(name: "ratioId", [manAge, womanAge])
+  @@unique(name: "ratioId", [manAge, womanAge])
 }
 
 model MatchLooksPersonalityRatio {
+  id      Int   @id @default(autoincrement())
   user    Int
   partner Int
   ratio   Float
 
-  @@id(name: "ratioId", [user, partner])
+  @@unique(name: "ratioId", [user, partner])
 }
 
 model MatchFirstDateRatio {
+  id      Int       @id @default(autoincrement())
   user    FirstDate
   partner FirstDate
   ratio   Float
 
-  @@id(name: "ratioId", [user, partner])
+  @@unique(name: "ratioId", [user, partner])
 }
 
 model MatchDayLookRatio {
+  id      Int     @id @default(autoincrement())
   user    DayLook
   partner DayLook
   ratio   Float
 
-  @@id(name: "ratioId", [user, partner])
-}
-
-model MatchGenderRatio {
-  user    Int
-  partner Int
-  ratio   Float
-
-  @@id(name: "ratioId", [user, partner])
+  @@unique(name: "ratioId", [user, partner])
 }
 
 model Feed {
-  userId          Int      @id
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
   selectedUserIds Int[]
   createdAt       DateTime @default(now())
 
@@ -413,10 +412,11 @@ model Feed {
 }
 
 model FeedArchived {
+  id              Int      @id @default(autoincrement())
   userId          Int
   selectedUserIds Int[]
   createdAt       DateTime
 
-  @@id(name: "feedArchivedId", [userId, createdAt])
+  @@unique(name: "feedArchivedId", [userId, createdAt])
   @@map("feed_archived")
 }

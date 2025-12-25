@@ -9,6 +9,5 @@ export const MatchManAgeRatioResource = (prisma: PrismaClient) => ({
     actions: {
       bulkDelete: { isVisible: false },
     },
-    listProperties: ['manAge', 'womanAge', 'ratio'],
   },
 });

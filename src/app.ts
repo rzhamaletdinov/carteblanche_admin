@@ -6,7 +6,7 @@ import session from 'express-session';
 import { Database, Resource } from '@adminjs/prisma';
 
 import { prisma } from './prisma.client.js';
-import { componentLoader } from './admin/component-loader.js';
+import { componentLoader } from './components/component-loader.js';
 import { PhotosResource } from './resources/entity/photos.resourse.js';
 import { UserResource } from './resources/entity/user.resource.js';
 import { VerificationCodeResource } from './resources/entity/verification_code.resource.js';
@@ -15,6 +15,11 @@ import { SettingsResource } from './resources/app-settings.resourse.js';
 import { MatchChildrenRatioResource } from './resources/ratio/children-ratio.resourse.js';
 import { MatchManAgeRatioResource } from './resources/ratio/man-age-ratio.resourse.js';
 import { MatchWoManAgeRatioResource } from './resources/ratio/woman-age-ratio.resourse.js';
+import { MatchLooksPersonalityRatioResource } from './resources/ratio/looks-personality-ratio.resourse.js';
+import { MatchFirstDateRatioResource } from './resources/ratio/first-date-ratio.resourse.js';
+import { MatchDayLookRatioResource } from './resources/ratio/day-look-ratio.resourse.js';
+import { FeedResource } from './resources/entity/feed.resourse.js';
+import { FeedArchivedResource } from './resources/entity/feed-archived.resourse.js';
 
 AdminJS.registerAdapter({ Database, Resource });
 
@@ -54,6 +59,11 @@ const start = async () => {
     MatchChildrenRatioResource(prisma),
     MatchManAgeRatioResource(prisma),
     MatchWoManAgeRatioResource(prisma),
+    MatchLooksPersonalityRatioResource(prisma),
+    MatchFirstDateRatioResource(prisma),
+    MatchDayLookRatioResource(prisma),
+    FeedResource(prisma),
+    FeedArchivedResource(prisma),
   ];
 
   const admin = new AdminJS({
@@ -87,7 +97,7 @@ const start = async () => {
         secure: process.env.NODE_ENV === 'production',
       },
       name: 'adminjs',
-    }
+    },
   );
 
   app.use(admin.options.rootPath, adminRouter);
