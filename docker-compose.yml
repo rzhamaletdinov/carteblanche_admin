@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  admin:
+    container_name: carteblanche_admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "3001:3000"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - dating_api_default
+
+networks:
+  dating_api_default:
+    external: true
