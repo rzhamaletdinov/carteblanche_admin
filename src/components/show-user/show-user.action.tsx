@@ -126,6 +126,7 @@ const UserInfoTab: React.FC<{ userData: UserData }> = ({ userData }) => (
               Income Source:
             </Text>
             <Text>
+              console.log(`userData.income_source`, userData.income_source);
               {Array.isArray(userData.income_source)
                 ? userData.income_source.join(', ') || 'NULL'
                 : formatValue(userData.income_source)}
